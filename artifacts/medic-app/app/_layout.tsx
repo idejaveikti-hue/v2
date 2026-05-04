@@ -10,11 +10,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import { AnimatedSplash } from "@/components/AnimatedSplash";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import colors from "@/constants/colors";
 
@@ -51,12 +52,18 @@ export default function RootLayout() {
     Inter_700Bold,
     Inter_800ExtraBold,
   });
+  const [splashDone, setSplashDone] = useState(false);
 
   useEffect(() => {
     if (fontsLoaded || fontError) {
+      // Hide native splash – our JS animation takes over
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded, fontError]);
+
+  const handleSplashFinish = useCallback(() => {
+    setSplashDone(true);
+  }, []);
 
   if (!fontsLoaded && !fontError) return null;
 
@@ -64,10 +71,15 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <ErrorBoundary>
         <QueryClientProvider client={queryClient}>
-          <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.light.background }}>
+          <GestureHandlerRootView
+            style={{ flex: 1, backgroundColor: colors.light.background }}
+          >
             <KeyboardProvider>
               <StatusBar style="light" />
               <RootLayoutNav />
+              {!splashDone && (
+                <AnimatedSplash onFinish={handleSplashFinish} />
+              )}
             </KeyboardProvider>
           </GestureHandlerRootView>
         </QueryClientProvider>
