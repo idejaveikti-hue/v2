@@ -30,7 +30,7 @@ Mobili Expo (React Native) aplikacija Lietuvos greitosios medicinos pagalbos par
 - [@expo-google-fonts/inter](https://github.com/expo/google-fonts)
 - TypeScript · pnpm workspaces (monorepo)
 
-## Diegimas
+## Diegimas (kūrėjams)
 
 ```bash
 git clone https://github.com/idejaveikti-hue/v2.git
@@ -40,6 +40,49 @@ pnpm --filter @workspace/medic-app run dev
 ```
 
 Tada nuskenuokite QR kodą su [Expo Go](https://expo.dev/client) programa telefone.
+
+## Android APK sukūrimas (EAS Build)
+
+### 1. Pasiruošimas
+
+```bash
+# Įdiegti EAS CLI
+npm install -g eas-cli
+
+# Prisijungti prie Expo paskyros
+eas login
+
+# Pereiti į medic-app katalogą
+cd artifacts/medic-app
+```
+
+### 2. Surinkti APK (testavimui)
+
+```bash
+eas build --platform android --profile preview
+```
+
+Tai sukuria **.apk** failą kurį galima tiesiai įdiegti į Android telefoną.
+
+### 3. Surinkti produkcijos versiją (Google Play)
+
+```bash
+eas build --platform android --profile production
+```
+
+Tai sukuria **.aab** failą Google Play Store publikavimui.
+
+### 4. Parsisiųsti APK
+
+Po sėkmingo build'o EAS pateiks nuorodą parsisiųsti APK failą arba galite rasti [expo.dev](https://expo.dev) paskyroje.
+
+### Build profiliai (`eas.json`)
+
+| Profilis | Tipas | Paskirtis |
+|---|---|---|
+| `preview` | APK | Testavimas telefone |
+| `development` | APK + dev client | Kūrėjų testavimas |
+| `production` | AAB | Google Play Store |
 
 ## Projekto struktūra
 
@@ -61,8 +104,10 @@ artifacts/medic-app/
 │   └── abcde.ts               # ABCDE + SAMPLE žingsniai
 ├── components/
 │   └── ProtocolIcon.tsx       # Protokolų ikonos
-└── constants/
-    └── colors.ts              # MedTec V2 spalvų paletė
+├── constants/
+│   └── colors.ts              # MedTec V2 spalvų paletė
+├── app.json                   # Expo konfigūracija
+└── eas.json                   # EAS Build konfigūracija
 ```
 
 ## ⚠️ Atsakomybės atsisakymas
