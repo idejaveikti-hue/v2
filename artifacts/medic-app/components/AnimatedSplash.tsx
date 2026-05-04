@@ -31,17 +31,17 @@ export function AnimatedSplash({ onFinish }: Props) {
           toValue: 1,
           tension: 60,
           friction: 7,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.timing(crossOpacity, {
           toValue: 1,
           duration: 400,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.timing(glowOpacity, {
           toValue: 1,
           duration: 600,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ]),
       // Phase 2: divider line + title slide up (600–900ms)
@@ -50,25 +50,25 @@ export function AnimatedSplash({ onFinish }: Props) {
           toValue: 1,
           tension: 80,
           friction: 8,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.timing(titleOpacity, {
           toValue: 1,
           duration: 300,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.spring(titleY, {
           toValue: 0,
           tension: 80,
           friction: 9,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ]),
       // Phase 3: subtitle fades in (900–1100ms)
       Animated.timing(subtitleOpacity, {
         toValue: 1,
         duration: 200,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
       // Phase 4: hold (1100–1800ms)
       Animated.delay(700),
@@ -76,7 +76,7 @@ export function AnimatedSplash({ onFinish }: Props) {
       Animated.timing(screenOpacity, {
         toValue: 0,
         duration: 300,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
     ]).start(() => {
       onFinish();
